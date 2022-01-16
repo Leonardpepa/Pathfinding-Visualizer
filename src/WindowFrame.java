@@ -23,6 +23,7 @@ public class WindowFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.pack();
+//		this.setResizable(false);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
 	}
