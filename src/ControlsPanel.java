@@ -15,6 +15,7 @@ public class ControlsPanel extends JPanel {
 
 	private JButton search;
 	private JButton reset;
+	private JButton resetPath;
 	private JButton generate;
 	private JComboBox<String> algorithms;
 //	private JComboBox<String> mazes;
@@ -47,7 +48,23 @@ public class ControlsPanel extends JPanel {
 		reset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				MyUtils.solving = false;
+				
 				gridPanel.resetGrid();
+				gridPanel.revalidate();
+				gridPanel.repaint();
+			}
+		});
+		
+		resetPath = new JButton("Reset path");
+		resetPath.setBounds(25, 350, 150, 30);
+		resetPath.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(MyUtils.solving) {
+					return;
+				}
+				gridPanel.resetPath();
 				gridPanel.repaint();
 			}
 		});
@@ -134,6 +151,7 @@ public class ControlsPanel extends JPanel {
 		this.add(size);
 		this.add(delayLabel);
 		this.add(delay);
+		this.add(resetPath);
 
 	}
 

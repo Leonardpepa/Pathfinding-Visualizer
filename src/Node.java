@@ -46,6 +46,7 @@ public class Node implements Comparable<Node> {
 				node.setParent(this);
 				node.setG(this.g + 1);
 				node.setH(heuristic(grid));
+				node.setF();
 				neighbors.add(node);
 			}
 		}
@@ -56,6 +57,7 @@ public class Node implements Comparable<Node> {
 				node.setParent(this);
 				node.setG(this.g + 1);
 				node.setH(heuristic(grid));
+				node.setF();
 				neighbors.add(node);
 			}
 		}
@@ -65,6 +67,7 @@ public class Node implements Comparable<Node> {
 				node.setParent(this);
 				node.setG(this.g + 1);
 				node.setH(heuristic(grid));
+				node.setF();
 				neighbors.add(node);
 			}
 		}
@@ -75,6 +78,7 @@ public class Node implements Comparable<Node> {
 				node.setParent(this);
 				node.setG(this.g + 1);
 				node.setH(heuristic(grid));
+				node.setF();
 				neighbors.add(node);
 			}
 		}
@@ -83,19 +87,18 @@ public class Node implements Comparable<Node> {
 	}
 
 	public int heuristic(Grid grid) {
-
-		int distance = (int) Point2D.distance(this.x, this.y, grid.getFinish().getX(), grid.getFinish().getY());
+		int distance = Math.abs(this.x - grid.getFinish().getX()) + Math.abs(this.y - grid.getFinish().getY());
+//		int distance = (int) Point2D.distance(this.x, this.y, grid.getFinish().getX(), grid.getFinish().getY());
 		return distance;
 	}
 
 	public void draw(Graphics2D g, JPanel panel) {
-		
-		
+
 		g.setColor(Color.black);
-		if(isWall) {
+		if (isWall) {
 			g.fillRect(x * size, y * size, size, size);
 		}
-		
+
 		switch (type) {
 		case 0:
 			g.setColor(Color.blue);
@@ -121,6 +124,7 @@ public class Node implements Comparable<Node> {
 		}
 		g.setStroke(new BasicStroke(1.5f));
 		g.fillRect(x * size, y * size, size, size);
+		panel.revalidate();
 		panel.repaint();
 	}
 
@@ -244,10 +248,11 @@ public class Node implements Comparable<Node> {
 	public void setWall(boolean isWall) {
 		this.isWall = isWall;
 	}
-	
+
 	public void toggleWall() {
 		this.isWall = !this.isWall;
 	}
+
 	public static int getSize() {
 		return size;
 	}
@@ -271,29 +276,26 @@ public class Node implements Comparable<Node> {
 		}
 
 		if (MyUtils.algorithm == 2) {
-			if (this.h > o.getH()) {
+			if (this.h < o.getH()) {
 				return 1;
-			} else if (this.h < o.getH()) {
+			} else if (this.h > o.getH()) {
 				return -1;
 			} else {
-				if (this.g > o.getG()) {
-					return 1;
-				}
-				return -1;
+				return 1;
 			}
-		}else if(MyUtils.algorithm == 3) {
-			if (this.f > o.getF()) {
+		} else if (MyUtils.algorithm == 3) {
+			if (this.f < o.getF()) {
 				return 1;
-			} else if (this.f < o.getF()) {
+			} else if (this.f > o.getF()) {
 				return -1;
 			} else {
-				if (this.g > o.getG()) {
+				if (this.g < o.getG()) {
 					return 1;
 				}
 				return -1;
 			}
 		}
-		
+
 		return 0;
 
 	}

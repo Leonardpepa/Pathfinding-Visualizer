@@ -33,6 +33,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		if (!MyUtils.solving) {
 			Node.size = cellSize;
 			grid = new Grid(height / Node.size, width / Node.size);
+			this.revalidate();
 			this.repaint();
 		}
 	}
@@ -40,6 +41,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 	public void updateStart(int x, int y) {
 		if (!MyUtils.solving) {
 			grid.setStart(grid.getNode(x, y));
+			this.revalidate();
 			this.repaint();
 		}
 	}
@@ -47,12 +49,14 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 	public void updateFinish(int x, int y) {
 		if (!MyUtils.solving) {
 			grid.setFinish(grid.getNode(x, y));
+			this.revalidate();
 			this.repaint();
 		}
 	}
 
 	public void resetGrid() {
 		MyUtils.solving = false;
+		MyUtils.breakAlgo = true;
 		grid.initialiseGrid();
 		this.revalidate();
 		this.repaint();
@@ -83,6 +87,9 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(MyUtils.solving) {
+			return;
+		}
 		int x = e.getX() / Node.size;
 		int y = e.getY() / Node.size;
 
@@ -101,25 +108,37 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 //		if (SwingUtilities.isMiddleMouseButton(e)) {
 //			updateWall(x, y);
 //		}
-
+		this.revalidate();
 		this.repaint();
 	}
 
+	public void resetPath() {
+		grid.resetPath();
+		this.revalidate();
+		this.repaint();
+	}
 	private void updateWall(int x, int y) {
 		grid.getNode(x, y).setWall(!grid.getNode(x, y).isWall());
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(MyUtils.solving) {
+			return;
+		}
 		int x = e.getX() / Node.size;
 		int y = e.getY() / Node.size;
-
+		if (x < 0 || y >= grid.getCols()) {
+			return;
+		}
 		current = grid.getNode(x, y);
-		System.out.println(current);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if(MyUtils.solving) {
+			return;
+		}
 		int x = e.getX() / Node.size;
 		int y = e.getY() / Node.size;
 
@@ -135,10 +154,11 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 //			updateStart(x, y);
 //		}
 
-//		if (SwingUtilities.isMiddleMouseButton(e)) {
+		if (SwingUtilities.isRightMouseButton(e)) {
 			updateWall(x, y);
-//		}
+		}
 		current = null;
+		this.revalidate();
 		this.repaint();
 	}
 
@@ -156,8 +176,15 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		if(MyUtils.solving) {
+			return;
+		}
 		int x = e.getX() / Node.size;
 		int y = e.getY() / Node.size;
+		if (x < 0 || y >= grid.getCols()) {
+			return;
+		}
+		
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			if (current != null && current.isStart()) {
 				current = grid.getNode(x, y);
@@ -165,7 +192,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 				grid.setStart(current);
 			}
 		}
-		if (SwingUtilities.isRightMouseButton(e)) {
+		if (SwingUtilities.isLeftMouseButton(e)) {
 			if (current != null && current.isFinish()) {
 				current = grid.getNode(x, y);
 				current.setWall(false);
@@ -174,13 +201,19 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		}
 		
 		
+		if (SwingUtilities.isRightMouseButton(e)) {
+			if (current != null && !current.isFinish() && !current.isStart()) {
+				current = grid.getNode(x, y);
+				current.setWall(true);
+			}
+		}
 		if (SwingUtilities.isMiddleMouseButton(e)) {
 			if (current != null && !current.isFinish() && !current.isStart()) {
 				current = grid.getNode(x, y);
-				current.toggleWall();
+				current.setWall(false);
 			}
 		}
-		
+		this.revalidate();
 		this.repaint();
 	}
 

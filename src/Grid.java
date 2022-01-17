@@ -29,11 +29,23 @@ public class Grid {
 		finish = grid[rows - 1][cols - 1];
 		finish.setFinish(true);
 	}
-	
+
 	public void clearWalls() {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				grid[i][j].setWall(false);
+			}
+		}
+	}
+
+	public void resetPath() {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				Node node = grid[i][j];
+				node.setType(-1);
+				node.setAlreadyVisited(false);
+				node.setG(0);
+				node.setH(0);
 			}
 		}
 	}
@@ -60,6 +72,7 @@ public class Grid {
 		}
 		start.draw(g, panel);
 		finish.draw(g, panel);
+		panel.revalidate();
 		panel.repaint();
 	}
 

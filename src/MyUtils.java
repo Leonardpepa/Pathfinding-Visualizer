@@ -6,4 +6,5 @@ public class MyUtils {
 										// 2: best
 										// 3: astar
 	public static  boolean solving = false;
+	public static boolean breakAlgo = false;
 }

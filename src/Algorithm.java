@@ -1,5 +1,8 @@
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.TreeSet;
 
 import javax.swing.JPanel;
 
@@ -17,6 +20,7 @@ public class Algorithm extends Thread {
 	@Override
 	public void run() {
 		if (MyUtils.solving) {
+			MyUtils.breakAlgo = false;
 			switch (MyUtils.algorithm) {
 			case 0:
 				bfs(grid.getStart());
@@ -35,24 +39,81 @@ public class Algorithm extends Thread {
 	}
 
 	private void astar(Node start) {
+		TreeSet<Node> queue = new TreeSet<Node>();
+		queue.add(start);
+		Node currentNode = null;
+		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
+			currentNode = queue.pollLast();
+			
+			currentNode.setType(2);
+			currentNode.setAlreadyVisited(true);
+			panel.repaint();
+			delay(MyUtils.delay);
 
+			if (currentNode.equals(grid.getFinish())) {
+				MyUtils.solving = false;
+				solutionFound = true;
+				extractSolution(currentNode);
+				continue;
+			} else {
+				currentNode.setType(1);
+				for (Node neighbor : currentNode.getNeighbors(grid)) {
+					queue.add(neighbor);
+					neighbor.setAlreadyVisited(true);
+				}
+			}
+
+		}
+		MyUtils.solving = false;
+		if (MyUtils.breakAlgo) {
+			grid.initialiseGrid();
+		}
+		panel.repaint();
 	}
 
 	private void best(Node start) {
-		// TODO Auto-generated method stub
+		LinkedList<Node> queue = new LinkedList<Node>();
+		queue.add(start);
+		Node currentNode = null;
+		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
+			currentNode = queue.pollLast();
+			
+			currentNode.setType(2);
+			currentNode.setAlreadyVisited(true);
+			panel.repaint();
+			delay(MyUtils.delay);
 
+			if (currentNode.equals(grid.getFinish())) {
+				MyUtils.solving = false;
+				solutionFound = true;
+				extractSolution(currentNode);
+				continue;
+			} else {
+				currentNode.setType(1);
+				for (Node neighbor : currentNode.getNeighbors(grid)) {
+					queue.add(neighbor);
+					neighbor.setAlreadyVisited(true);
+				}
+				Collections.sort(queue);
+			}
+
+		}
+		MyUtils.solving = false;
+		if (MyUtils.breakAlgo) {
+			grid.initialiseGrid();
+		}
+		panel.repaint();
 	}
 
 	private void dfs(Node start) {
 		dfsUntill(start);
-
+		MyUtils.solving = false;
 	}
 
 	private void dfsUntill(Node node) {
-		if (!MyUtils.solving) {
+		if (!MyUtils.solving || solutionFound) {
 			return;
 		}
-
 		node.setType(2);
 		node.setAlreadyVisited(true);
 		panel.repaint();
@@ -60,6 +121,7 @@ public class Algorithm extends Thread {
 
 		if (node.equals(grid.getFinish())) {
 			MyUtils.solving = false;
+			solutionFound = true;
 			extractSolution(node);
 			return;
 		} else {
@@ -73,23 +135,23 @@ public class Algorithm extends Thread {
 
 	private void bfs(Node startingNode) {
 		Queue<Node> frontier = new LinkedList<Node>();
-		Node curretNode = null;
+		Node currentNode = null;
 		frontier.add(startingNode);
 
 		while (MyUtils.solving && !frontier.isEmpty() && !solutionFound) {
-			curretNode = frontier.poll();
-			curretNode.setType(2);
+			currentNode = frontier.poll();
+			currentNode.setType(2);
+			currentNode.setAlreadyVisited(true);
 			panel.repaint();
 			delay(MyUtils.delay);
 
-			if (curretNode.equals(grid.getFinish())) {
+			if (currentNode.equals(grid.getFinish())) {
 				MyUtils.solving = false;
-				extractSolution(curretNode);
+				extractSolution(currentNode);
 				continue;
 			} else {
-				curretNode.setType(1);
-				curretNode.setAlreadyVisited(true);
-				for (Node neighbor : curretNode.getNeighbors(grid)) {
+				currentNode.setType(1);
+				for (Node neighbor : currentNode.getNeighbors(grid)) {
 					frontier.add(neighbor);
 					neighbor.setType(4);
 					neighbor.setAlreadyVisited(true);
@@ -99,6 +161,9 @@ public class Algorithm extends Thread {
 		}
 
 		MyUtils.solving = false;
+		if (MyUtils.breakAlgo) {
+			grid.initialiseGrid();
+		}
 		panel.repaint();
 	}
 
