@@ -1,9 +1,13 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class Node {
+import javax.swing.JPanel;
+
+public class Node implements Comparable<Node> {
 	private int x;
 	private int y;
 	private int g;
@@ -14,11 +18,17 @@ public class Node {
 	// type 1: visited node
 	// type 2: current node
 	// type 3: ending node
+	// type 4: frontier node
+	// type 5: path node
 
 	private boolean isWall = false;
+	private boolean isStart = false;
+	private boolean isFinish = false;
+
 	private boolean alreadyVisited;
 
-	private static int size = 30; // default size
+	public static int size = 30;// default size
+
 	private Node parent;
 
 	public Node(int x, int y) {
@@ -26,29 +36,92 @@ public class Node {
 		this.y = y;
 	}
 
-	public LinkedList<Node> getNeighbors(Node[][] nodes) {
-		return null;
+	public LinkedList<Node> getNeighbors(Grid grid) {
+
+		LinkedList<Node> neighbors = new LinkedList<Node>();
+
+		if (this.y - 1 >= 0 && this.y < grid.getCols()) {
+			Node node = grid.getNode(this.x, this.y - 1);
+			if (!node.alreadyVisited && !node.isWall) {
+				node.setParent(this);
+				node.setG(this.g + 1);
+				node.setH(heuristic(grid));
+				neighbors.add(node);
+			}
+		}
+
+		if (this.x + 1 < grid.getRows() && x >= 0) {
+			Node node = grid.getNode(this.x + 1, this.y);
+			if (!node.alreadyVisited && !node.isWall) {
+				node.setParent(this);
+				node.setG(this.g + 1);
+				node.setH(heuristic(grid));
+				neighbors.add(node);
+			}
+		}
+		if (this.y + 1 < grid.getCols() && this.y >= 0) {
+			Node node = grid.getNode(this.x, this.y + 1);
+			if (!node.alreadyVisited && !node.isWall) {
+				node.setParent(this);
+				node.setG(this.g + 1);
+				node.setH(heuristic(grid));
+				neighbors.add(node);
+			}
+		}
+
+		if (this.x - 1 >= 0 && this.x < grid.getRows()) {
+			Node node = grid.getNode(this.x - 1, this.y);
+			if (!node.alreadyVisited && !node.isWall) {
+				node.setParent(this);
+				node.setG(this.g + 1);
+				node.setH(heuristic(grid));
+				neighbors.add(node);
+			}
+		}
+
+		return neighbors;
 	}
 
-	public void draw(Graphics2D g) {
+	public int heuristic(Grid grid) {
 
-		if (type == -1) {
+		int distance = (int) Point2D.distance(this.x, this.y, grid.getFinish().getX(), grid.getFinish().getY());
+		return distance;
+	}
+
+	public void draw(Graphics2D g, JPanel panel) {
+		
+		
+		g.setColor(Color.black);
+		if(isWall) {
+			g.fillRect(x * size, y * size, size, size);
+		}
+		
+		switch (type) {
+		case 0:
+			g.setColor(Color.blue);
+			break;
+		case 1:
+			g.setColor(Color.cyan);
+			break;
+		case 2:
+			g.setColor(Color.magenta);
+			break;
+		case 3:
+			g.setColor(Color.red);
+			break;
+		case 4:
+			g.setColor(Color.GREEN);
+			break;
+		case 5:
+			g.setColor(Color.yellow);
+			break;
+
+		default:
 			return;
 		}
-
-		if (type == 0) {
-			g.setColor(Color.green);
-		} else if (type == 1) {
-			g.setColor(Color.cyan);
-		} else if (type == 2) {
-			g.setColor(Color.MAGENTA);
-		} else if (type == 3) {
-			g.setColor(Color.red);
-		} else if (type == 4) {
-			g.setColor(Color.yellow);
-		}
+		g.setStroke(new BasicStroke(1.5f));
 		g.fillRect(x * size, y * size, size, size);
-
+		panel.repaint();
 	}
 
 	@Override
@@ -77,6 +150,32 @@ public class Node {
 	@Override
 	public String toString() {
 		return "x: " + this.x + " y: " + this.y;
+	}
+
+	public boolean isStart() {
+		return isStart;
+	}
+
+	public void setStart(boolean isStart) {
+		if (isStart) {
+			this.type = 0;
+		} else {
+			this.type = -1;
+		}
+		this.isStart = isStart;
+	}
+
+	public boolean isFinish() {
+		return isFinish;
+	}
+
+	public void setFinish(boolean isFinish) {
+		if (isFinish) {
+			this.type = 3;
+		} else {
+			this.type = -1;
+		}
+		this.isFinish = isFinish;
 	}
 
 	public int getX() {
@@ -124,6 +223,9 @@ public class Node {
 	}
 
 	public void setType(int type) {
+		if (isStart || isFinish) {
+			return;
+		}
 		this.type = type;
 	}
 
@@ -142,7 +244,10 @@ public class Node {
 	public void setWall(boolean isWall) {
 		this.isWall = isWall;
 	}
-
+	
+	public void toggleWall() {
+		this.isWall = !this.isWall;
+	}
 	public static int getSize() {
 		return size;
 	}
@@ -157,6 +262,40 @@ public class Node {
 
 	public void setAlreadyVisited(boolean alreadyVisited) {
 		this.alreadyVisited = alreadyVisited;
+	}
+
+	@Override
+	public int compareTo(Node o) {
+		if (this.equals(o)) {
+			return 0;
+		}
+
+		if (MyUtils.algorithm == 2) {
+			if (this.h > o.getH()) {
+				return 1;
+			} else if (this.h < o.getH()) {
+				return -1;
+			} else {
+				if (this.g > o.getG()) {
+					return 1;
+				}
+				return -1;
+			}
+		}else if(MyUtils.algorithm == 3) {
+			if (this.f > o.getF()) {
+				return 1;
+			} else if (this.f < o.getF()) {
+				return -1;
+			} else {
+				if (this.g > o.getG()) {
+					return 1;
+				}
+				return -1;
+			}
+		}
+		
+		return 0;
+
 	}
 
 }

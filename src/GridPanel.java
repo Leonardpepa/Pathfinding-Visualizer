@@ -1,32 +1,191 @@
-import java.awt.Dimension;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-public class GridPanel extends JPanel {
+public class GridPanel extends JPanel implements MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 3728396685715564240L;
-	private int size = Node.getSize();
-
-	private int rows;
-	private int cols;
 	private Grid grid;
 
-	public GridPanel() {
-		this.setSize(700, 700);
-		this.setPreferredSize(new Dimension(700, 700));
+	private int height;
+	private int width;
+
+	Node current = null;
+
+	public GridPanel(int height, int width, Grid grid) {
+		this.setSize(height, width);
 		this.setFocusable(true);
-		rows = this.getHeight() / size;
-		cols = this.getWidth() / size;
-		
-		grid = new Grid(rows, cols);
+		this.grid = grid;
+		this.height = height;
+		this.width = width;
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
+	}
+
+	public void updateGrid(int cellSize) {
+		if (!MyUtils.solving) {
+			Node.size = cellSize;
+			grid = new Grid(height / Node.size, width / Node.size);
+			this.repaint();
+		}
+	}
+
+	public void updateStart(int x, int y) {
+		if (!MyUtils.solving) {
+			grid.setStart(grid.getNode(x, y));
+			this.repaint();
+		}
+	}
+
+	public void updateFinish(int x, int y) {
+		if (!MyUtils.solving) {
+			grid.setFinish(grid.getNode(x, y));
+			this.repaint();
+		}
+	}
+
+	public void resetGrid() {
+		MyUtils.solving = false;
+		grid.initialiseGrid();
+		this.revalidate();
+		this.repaint();
+	}
+
+	public void clearWalls() {
+		grid.clearWalls();
+		this.revalidate();
+		this.repaint();
+	}
+
+	public Grid getGrid() {
+		return grid;
+	}
+
+	public void setGrid(Grid grid) {
+		this.grid = grid;
 	}
 
 	@Override
 	public void paintComponent(Graphics graphics) {
 		Graphics2D g = (Graphics2D) graphics;
-		grid.drawGrid(g);
+		super.paintComponent(g);
+		g.setStroke(new BasicStroke(1.5f));
+		g.setColor(Color.black);
+		grid.drawGrid(g, this);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int x = e.getX() / Node.size;
+		int y = e.getY() / Node.size;
+
+		if (x < 0 || y >= grid.getCols()) {
+			return;
+		}
+
+//		if (SwingUtilities.isRightMouseButton(e)) {
+//			updateFinish(x, y);
+//		}
+//
+//		if (SwingUtilities.isLeftMouseButton(e)) {
+//			updateStart(x, y);
+//		}
+
+//		if (SwingUtilities.isMiddleMouseButton(e)) {
+//			updateWall(x, y);
+//		}
+
+		this.repaint();
+	}
+
+	private void updateWall(int x, int y) {
+		grid.getNode(x, y).setWall(!grid.getNode(x, y).isWall());
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		int x = e.getX() / Node.size;
+		int y = e.getY() / Node.size;
+
+		current = grid.getNode(x, y);
+		System.out.println(current);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		int x = e.getX() / Node.size;
+		int y = e.getY() / Node.size;
+
+		if (x < 0 || y >= grid.getCols()) {
+			return;
+		}
+
+//		if (SwingUtilities.isRightMouseButton(e)) {
+//			updateFinish(x, y);
+//		}
+//
+//		if (SwingUtilities.isLeftMouseButton(e)) {
+//			updateStart(x, y);
+//		}
+
+//		if (SwingUtilities.isMiddleMouseButton(e)) {
+			updateWall(x, y);
+//		}
+		current = null;
+		this.repaint();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		int x = e.getX() / Node.size;
+		int y = e.getY() / Node.size;
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			if (current != null && current.isStart()) {
+				current = grid.getNode(x, y);
+				current.setWall(false);
+				grid.setStart(current);
+			}
+		}
+		if (SwingUtilities.isRightMouseButton(e)) {
+			if (current != null && current.isFinish()) {
+				current = grid.getNode(x, y);
+				current.setWall(false);
+				grid.setFinish(current);
+			}
+		}
+		
+		if (SwingUtilities.isMiddleMouseButton(e)) {
+			if (current != null && !current.isFinish() && !current.isStart()) {
+				current = grid.getNode(x, y);
+				current.toggleWall();
+			}
+		}
+		
+		this.repaint();
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+
 	}
 
 }

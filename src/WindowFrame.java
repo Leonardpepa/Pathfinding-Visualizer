@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
@@ -9,22 +10,33 @@ public class WindowFrame extends JFrame {
 
 	private JPanel container;
 
-	public static final int WIDTH = 700;
-	public static final int HEIGHT = 700;
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 600;
+
+	public static int rows = HEIGHT / Node.size;
+	public static int cols = HEIGHT / Node.size;
 
 	public WindowFrame() {
 
-		container = new JPanel();
-		GridPanel gridPanel = new GridPanel();
+		Grid grid = new Grid(rows, cols);
 
-		container.add(gridPanel);
+		container = new JPanel();
+
+		GridPanel gridPanel = new GridPanel(WIDTH - 200, HEIGHT, grid);
+
+		ControlsPanel controls = new ControlsPanel(200, HEIGHT, gridPanel);
+
+		container.setLayout(new BorderLayout());
+
+		container.add(BorderLayout.WEST, controls);
+		container.add(BorderLayout.CENTER, gridPanel);
 
 		this.setContentPane(container);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.pack();
-//		this.setResizable(false);
 		this.setVisible(true);
+		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 	}
 
