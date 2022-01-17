@@ -173,6 +173,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 			}
 		}
 		
+		
 		if (SwingUtilities.isMiddleMouseButton(e)) {
 			if (current != null && !current.isFinish() && !current.isStart()) {
 				current = grid.getNode(x, y);
