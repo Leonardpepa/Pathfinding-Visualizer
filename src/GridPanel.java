@@ -107,6 +107,16 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		if (x < 0 || y >= grid.getCols()) {
 			return;
 		}
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			if (grid.getNode(x, y) != null && !grid.getNode(x, y).isFinish() && !grid.getNode(x, y).isStart()) {
+				grid.getNode(x, y).setWall(true);
+			}
+		}
+		if (SwingUtilities.isRightMouseButton(e)) {
+			if (grid.getNode(x, y) != null && !grid.getNode(x, y).isFinish() && !grid.getNode(x, y).isStart()) {
+				grid.getNode(x, y).setWall(false);
+			}
+		}
 		current = grid.getNode(x, y);
 	}
 
@@ -121,7 +131,18 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		if (x < 0 || y >= grid.getCols()) {
 			return;
 		}
-
+		
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			if (grid.getNode(x, y) != null && !grid.getNode(x, y).isFinish() && !grid.getNode(x, y).isStart()) {
+				grid.getNode(x, y).setWall(true);
+			}
+		}
+		if (SwingUtilities.isRightMouseButton(e)) {
+			if (grid.getNode(x, y) != null && !grid.getNode(x, y).isFinish() && !grid.getNode(x, y).isStart()) {
+				grid.getNode(x, y).setWall(false);
+			}
+		}
+		
 		current = null;
 		this.revalidate();
 		this.repaint();

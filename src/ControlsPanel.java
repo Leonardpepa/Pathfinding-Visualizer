@@ -107,15 +107,26 @@ public class ControlsPanel extends JPanel {
 		algorithms.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (MyUtils.solving) {
+					return;
+				}
 				MyUtils.algorithm = algorithms.getSelectedIndex();
 			}
 		});
 
 		allowDiagonials = new JCheckBox("Allow diagonial moves");
-		allowDiagonials.setBounds(25, 270, 200, 20);
+		allowDiagonials.setBounds(25, 260, 200, 20);
 		allowDiagonials.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
+				if(MyUtils.solving) {
+					if (MyUtils.allowDiagonials) {
+						allowDiagonials.setSelected(true);
+					} else {
+						allowDiagonials.setSelected(false);
+					}
+					return;
+				}
 				MyUtils.allowDiagonials = allowDiagonials.isSelected();
 			}
 		});
@@ -131,6 +142,10 @@ public class ControlsPanel extends JPanel {
 		size.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
+				if (MyUtils.solving) {
+					return;
+				}
+
 				int cellSize = size.getValue() / 10 * 10;
 
 				if (cellSize != Node.size) {

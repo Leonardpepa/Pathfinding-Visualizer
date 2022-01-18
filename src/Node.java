@@ -1,7 +1,6 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -11,8 +10,8 @@ public class Node {
 	private int x;
 	private int y;
 	private int g;
-	private int h;
-	private int f;
+	private double h;
+	private double f;
 	private int type = -1; // default value
 	// type 0: starting node
 	// type 1: visited node
@@ -39,7 +38,7 @@ public class Node {
 	public LinkedList<Node> getNeighbors(Grid grid) {
 
 		LinkedList<Node> neighbors = new LinkedList<Node>();
-		
+
 		if (this.x + 1 < grid.getRows() && x >= 0) {
 			Node node = grid.getNode(this.x + 1, this.y);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -51,7 +50,7 @@ public class Node {
 				neighbors.add(node);
 			}
 		}
-		
+
 		if (this.y + 1 < grid.getCols() && this.y >= 0) {
 			Node node = grid.getNode(this.x, this.y + 1);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -63,7 +62,7 @@ public class Node {
 				neighbors.add(node);
 			}
 		}
-		
+
 		if (this.x - 1 >= 0 && this.x < grid.getRows()) {
 			Node node = grid.getNode(this.x - 1, this.y);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -76,7 +75,6 @@ public class Node {
 			}
 		}
 
-		
 		if (this.y - 1 >= 0 && this.y < grid.getCols()) {
 			Node node = grid.getNode(this.x, this.y - 1);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -88,8 +86,6 @@ public class Node {
 				neighbors.add(node);
 			}
 		}
-
-		
 
 		if (MyUtils.allowDiagonials) {
 			if (this.x - 1 >= 0 && this.y - 1 >= 0) {
@@ -150,10 +146,11 @@ public class Node {
 		node.setF();
 	}
 
-	public int heuristic(Grid grid) {
-		int distance;
+	public double heuristic(Grid grid) {
+		double distance;
 		if (MyUtils.allowDiagonials) {
-			distance = (int) Point2D.distance(this.x, this.y, grid.getFinish().getX(), grid.getFinish().getY());
+			distance = Math.hypot(Math.abs(this.x - grid.getFinish().getX()),
+					Math.abs(this.y - grid.getFinish().getY()));
 		} else {
 			distance = Math.abs(this.x - grid.getFinish().getX()) + Math.abs(this.y - grid.getFinish().getY());
 		}
@@ -274,15 +271,15 @@ public class Node {
 		this.g = g;
 	}
 
-	public int getH() {
+	public double getH() {
 		return h;
 	}
 
-	public void setH(int h) {
+	public void setH(double h) {
 		this.h = h;
 	}
 
-	public int getF() {
+	public double getF() {
 		return f;
 	}
 

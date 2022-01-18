@@ -66,7 +66,13 @@ public class Algorithm extends Thread {
 				}
 				queue.sort(new Comparator<Node>() {
 					public int compare(Node n1, Node n2) {
-						return n1.getF() - n2.getF();
+						if (n1.getF() > n2.getF()) {
+							return 1;
+						} else if (n1.getF() < n2.getF()) {
+							return -1;
+						} else {
+							return 0;
+						}
 					}
 				});
 			}
@@ -84,7 +90,7 @@ public class Algorithm extends Thread {
 			current.setType(2);
 			panel.repaint();
 			delay(MyUtils.delay);
-			System.out.println(current.getH() + "  " + current.getF() + "  " + current.getG());
+
 			if (current.equals(grid.getFinish())) {
 				MyUtils.solving = false;
 				solutionFound = true;
@@ -99,7 +105,13 @@ public class Algorithm extends Thread {
 				}
 				queue.sort(new Comparator<Node>() {
 					public int compare(Node n1, Node n2) {
-						return n1.getH() - n2.getH();
+						if (n1.getH() > n2.getH()) {
+							return 1;
+						} else if (n1.getH() < n2.getH()) {
+							return -1;
+						} else {
+							return 0;
+						}
 					}
 				});
 			}
@@ -137,29 +149,29 @@ public class Algorithm extends Thread {
 
 	}
 
-	private void dfsUntill(Node node) {
-		if (!MyUtils.solving || solutionFound) {
-			return;
-		}
-		node.setType(2);
-		node.setAlreadyVisited(true);
-		panel.repaint();
-		delay(MyUtils.delay);
-
-		if (node.equals(grid.getFinish())) {
-			MyUtils.solving = false;
-			solutionFound = true;
-			extractSolution(node);
-			return;
-		} else {
-			node.setType(1);
-			for (Node child : node.getNeighbors(grid)) {
-				dfsUntill(child);
-			}
-
-		}
-
-	}
+//	private void dfsUntill(Node node) {
+//		if (!MyUtils.solving || solutionFound) {
+//			return;
+//		}
+//		node.setType(2);
+//		node.setAlreadyVisited(true);
+//		panel.repaint();
+//		delay(MyUtils.delay);
+//
+//		if (node.equals(grid.getFinish())) {
+//			MyUtils.solving = false;
+//			solutionFound = true;
+//			extractSolution(node);
+//			return;
+//		} else {
+//			node.setType(1);
+//			for (Node child : node.getNeighbors(grid)) {
+//				dfsUntill(child);
+//			}
+//
+//		}
+//
+//	}
 
 	private void bfs(Node startingNode) {
 		Queue<Node> frontier = new LinkedList<Node>();
