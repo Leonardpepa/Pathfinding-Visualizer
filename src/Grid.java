@@ -46,6 +46,7 @@ public class Grid {
 				node.setAlreadyVisited(false);
 				node.setG(0);
 				node.setH(0);
+				node.setF();
 			}
 		}
 	}

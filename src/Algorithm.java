@@ -53,9 +53,9 @@ public class Algorithm extends Thread {
 			delay(MyUtils.delay);
 
 			if (current.equals(grid.getFinish())) {
+				extractSolution(current);
 				MyUtils.solving = false;
 				solutionFound = true;
-				extractSolution(current);
 				return;
 			} else {
 				current.setType(1);
@@ -95,9 +95,9 @@ public class Algorithm extends Thread {
 			delay(MyUtils.delay);
 
 			if (current.equals(grid.getFinish())) {
+				extractSolution(current);
 				MyUtils.solving = false;
 				solutionFound = true;
-				extractSolution(current);
 				return;
 			} else {
 				current.setType(1);
@@ -166,9 +166,9 @@ public class Algorithm extends Thread {
 		delay(MyUtils.delay);
 
 		if (node.equals(grid.getFinish())) {
+			extractSolution(node);
 			MyUtils.solving = false;
 			solutionFound = true;
-			extractSolution(node);
 			return;
 		} else {
 			node.setType(1);
@@ -193,8 +193,9 @@ public class Algorithm extends Thread {
 			delay(MyUtils.delay);
 
 			if (currentNode.equals(grid.getFinish())) {
-				MyUtils.solving = false;
 				extractSolution(currentNode);
+				MyUtils.solving = false;
+				solutionFound = true;
 				continue;
 			} else {
 				currentNode.setType(1);
@@ -209,6 +210,10 @@ public class Algorithm extends Thread {
 	}
 
 	public void extractSolution(Node node) {
+		if(!MyUtils.solving) {
+			return;
+		}
+		
 		Node parent = node.getParent();
 
 		while (parent != null) {

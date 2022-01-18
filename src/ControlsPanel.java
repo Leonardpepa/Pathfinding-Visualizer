@@ -43,6 +43,8 @@ public class ControlsPanel extends JPanel {
 				if (MyUtils.solving) {
 					return;
 				}
+				gridPanel.resetPath();
+				
 				MyUtils.solving = true;
 				Algorithm algo = new Algorithm(gridPanel.getGrid(), gridPanel);
 				algo.start();
