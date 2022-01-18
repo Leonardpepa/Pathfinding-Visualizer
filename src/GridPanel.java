@@ -20,11 +20,12 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 	Node current = null;
 
 	public GridPanel(int height, int width, Grid grid) {
-		this.setSize(height, width);
-		this.setFocusable(true);
 		this.grid = grid;
 		this.height = height;
 		this.width = width;
+
+		this.setSize(height, width);
+		this.setFocusable(true);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 	}
@@ -87,7 +88,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-	
+
 	}
 
 	public void resetPath() {
@@ -117,6 +118,8 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 			}
 		}
 		current = grid.getNode(x, y);
+		this.revalidate();
+		this.repaint();
 	}
 
 	@Override
@@ -130,7 +133,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		if (x < 0 || y >= grid.getCols()) {
 			return;
 		}
-		
+
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			if (grid.getNode(x, y) != null && !grid.getNode(x, y).isFinish() && !grid.getNode(x, y).isStart()) {
 				grid.getNode(x, y).setWall(true);
@@ -141,7 +144,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 				grid.getNode(x, y).setWall(false);
 			}
 		}
-		
+
 		current = null;
 		this.revalidate();
 		this.repaint();

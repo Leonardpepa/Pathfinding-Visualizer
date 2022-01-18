@@ -42,7 +42,7 @@ public class Grid {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				Node node = grid[i][j];
-				node.setType(-1);
+				node.setType(Type.DEFAULT);
 				node.setAlreadyVisited(false);
 				node.setG(0);
 				node.setH(0);

@@ -110,6 +110,7 @@ public class ControlsPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (MyUtils.solving) {
+					algorithms.setSelectedIndex(MyUtils.algorithm);
 					return;
 				}
 				MyUtils.algorithm = algorithms.getSelectedIndex();

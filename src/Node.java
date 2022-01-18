@@ -12,7 +12,7 @@ public class Node {
 	private int g;
 	private double h;
 	private double f;
-	private int type = -1; // default value
+	private Type type = Type.DEFAULT; // default value
 	// type 0: starting node
 	// type 1: visited node
 	// type 2: current node
@@ -38,8 +38,7 @@ public class Node {
 	public LinkedList<Node> getNeighbors(Grid grid) {
 
 		LinkedList<Node> neighbors = new LinkedList<Node>();
-		
-		
+
 		if (this.y - 1 >= 0 && this.y < grid.getCols()) {
 			Node node = grid.getNode(this.x, this.y - 1);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -51,7 +50,7 @@ public class Node {
 				neighbors.add(node);
 			}
 		}
-		
+
 		if (this.x + 1 < grid.getRows() && x >= 0) {
 			Node node = grid.getNode(this.x + 1, this.y);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -64,7 +63,6 @@ public class Node {
 			}
 		}
 
-
 		if (this.x - 1 >= 0 && this.x < grid.getRows()) {
 			Node node = grid.getNode(this.x - 1, this.y);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -76,7 +74,7 @@ public class Node {
 				neighbors.add(node);
 			}
 		}
-		
+
 		if (this.y + 1 < grid.getCols() && this.y >= 0) {
 			Node node = grid.getNode(this.x, this.y + 1);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -167,22 +165,22 @@ public class Node {
 		}
 
 		switch (type) {
-		case 0:
+		case START:
 			g.setColor(Color.blue);
 			break;
-		case 1:
+		case VISITED:
 			g.setColor(Color.cyan);
 			break;
-		case 2:
+		case CURRENT:
 			g.setColor(Color.magenta);
 			break;
-		case 3:
+		case FINISH:
 			g.setColor(Color.red);
 			break;
-		case 4:
+		case FRONTIER:
 			g.setColor(Color.GREEN);
 			break;
-		case 5:
+		case PATH:
 			g.setColor(Color.yellow);
 			break;
 
@@ -229,9 +227,9 @@ public class Node {
 
 	public void setStart(boolean isStart) {
 		if (isStart) {
-			this.type = 0;
+			this.type = Type.START;
 		} else {
-			this.type = -1;
+			this.type = Type.DEFAULT;
 		}
 		this.isStart = isStart;
 	}
@@ -242,9 +240,9 @@ public class Node {
 
 	public void setFinish(boolean isFinish) {
 		if (isFinish) {
-			this.type = 3;
+			this.type = Type.FINISH;
 		} else {
-			this.type = -1;
+			this.type = Type.DEFAULT;
 		}
 		this.isFinish = isFinish;
 	}
@@ -289,11 +287,11 @@ public class Node {
 		this.f = this.g + this.h;
 	}
 
-	public int getType() {
+	public Type getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(Type type) {
 		if (isStart || isFinish) {
 			return;
 		}

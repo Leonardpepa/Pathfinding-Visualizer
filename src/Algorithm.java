@@ -9,7 +9,7 @@ public class Algorithm extends Thread {
 	private Grid grid;
 	private JPanel panel;
 	private boolean solutionFound = false;
-
+	
 	public Algorithm(Grid grid, JPanel panel) {
 		this.grid = grid;
 		this.panel = panel;
@@ -48,7 +48,7 @@ public class Algorithm extends Thread {
 
 		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
 			Node current = queue.pollFirst();
-			current.setType(2);
+			current.setType(Type.CURRENT);
 			panel.repaint();
 			delay(MyUtils.delay);
 
@@ -58,11 +58,11 @@ public class Algorithm extends Thread {
 				solutionFound = true;
 				return;
 			} else {
-				current.setType(1);
+				current.setType(Type.VISITED);
 				for (Node child : current.getNeighbors(grid)) {
 					queue.add(child);
 					child.setAlreadyVisited(true);
-					child.setType(4);
+					child.setType(Type.FRONTIER);
 				}
 				queue.sort(new Comparator<Node>() {
 					public int compare(Node n1, Node n2) {
@@ -90,7 +90,7 @@ public class Algorithm extends Thread {
 
 		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
 			Node current = queue.poll();
-			current.setType(2);
+			current.setType(Type.CURRENT);
 			panel.repaint();
 			delay(MyUtils.delay);
 
@@ -100,11 +100,11 @@ public class Algorithm extends Thread {
 				solutionFound = true;
 				return;
 			} else {
-				current.setType(1);
+				current.setType(Type.VISITED);
 				for (Node child : current.getNeighbors(grid)) {
 					queue.add(child);
 					child.setAlreadyVisited(true);
-					child.setType(4);
+					child.setType(Type.FRONTIER);
 				}
 				queue.sort(new Comparator<Node>() {
 					public int compare(Node n1, Node n2) {
@@ -135,7 +135,7 @@ public class Algorithm extends Thread {
 //
 //		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
 //			Node current = queue.pollLast();
-//			current.setType(2);
+//			current.setType(Type.CURRENT);
 //			panel.repaint();
 //			delay(MyUtils.delay);
 //
@@ -145,11 +145,11 @@ public class Algorithm extends Thread {
 //				extractSolution(current);
 //				return;
 //			} else {
-//				current.setType(1);
+//				current.setType(Type.VISITED);
 //				for (Node child : current.getNeighbors(grid)) {
 //					queue.addLast(child);
 //					child.setAlreadyVisited(true);
-//					child.setType(4);
+//					child.setType(Type.FRONTIER);
 //				}
 //			}
 //		}
@@ -160,7 +160,7 @@ public class Algorithm extends Thread {
 		if (!MyUtils.solving || solutionFound) {
 			return;
 		}
-		node.setType(2);
+		node.setType(Type.CURRENT);
 		node.setAlreadyVisited(true);
 		panel.repaint();
 		delay(MyUtils.delay);
@@ -171,7 +171,7 @@ public class Algorithm extends Thread {
 			solutionFound = true;
 			return;
 		} else {
-			node.setType(1);
+			node.setType(Type.VISITED);
 			for (Node child : node.getNeighbors(grid)) {
 				dfsUntill(child);
 			}
@@ -187,7 +187,7 @@ public class Algorithm extends Thread {
 
 		while (MyUtils.solving && !frontier.isEmpty() && !solutionFound) {
 			currentNode = frontier.poll();
-			currentNode.setType(2);
+			currentNode.setType(Type.CURRENT);
 			currentNode.setAlreadyVisited(true);
 			panel.repaint();
 			delay(MyUtils.delay);
@@ -198,10 +198,10 @@ public class Algorithm extends Thread {
 				solutionFound = true;
 				continue;
 			} else {
-				currentNode.setType(1);
+				currentNode.setType(Type.VISITED);
 				for (Node neighbor : currentNode.getNeighbors(grid)) {
 					frontier.add(neighbor);
-					neighbor.setType(4);
+					neighbor.setType(Type.FRONTIER);
 					neighbor.setAlreadyVisited(true);
 				}
 			}
@@ -217,7 +217,7 @@ public class Algorithm extends Thread {
 		Node parent = node.getParent();
 
 		while (parent != null) {
-			parent.setType(5);
+			parent.setType(Type.PATH);
 			panel.repaint();
 			delay(10);
 			parent = parent.getParent();
