@@ -38,7 +38,20 @@ public class Node {
 	public LinkedList<Node> getNeighbors(Grid grid) {
 
 		LinkedList<Node> neighbors = new LinkedList<Node>();
-
+		
+		
+		if (this.y - 1 >= 0 && this.y < grid.getCols()) {
+			Node node = grid.getNode(this.x, this.y - 1);
+			if (!node.alreadyVisited && !node.isWall) {
+//				node.setParent(this);
+//				node.setG(this.g + 1);
+//				node.setH(node.heuristic(grid));
+//				node.setF();
+				createNeighbor(node, grid);
+				neighbors.add(node);
+			}
+		}
+		
 		if (this.x + 1 < grid.getRows() && x >= 0) {
 			Node node = grid.getNode(this.x + 1, this.y);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -51,17 +64,6 @@ public class Node {
 			}
 		}
 
-		if (this.y + 1 < grid.getCols() && this.y >= 0) {
-			Node node = grid.getNode(this.x, this.y + 1);
-			if (!node.alreadyVisited && !node.isWall) {
-//				node.setParent(this);
-//				node.setG(this.g + 1);
-//				node.setH(node.heuristic(grid));
-//				node.setF();
-				createNeighbor(node, grid);
-				neighbors.add(node);
-			}
-		}
 
 		if (this.x - 1 >= 0 && this.x < grid.getRows()) {
 			Node node = grid.getNode(this.x - 1, this.y);
@@ -74,9 +76,9 @@ public class Node {
 				neighbors.add(node);
 			}
 		}
-
-		if (this.y - 1 >= 0 && this.y < grid.getCols()) {
-			Node node = grid.getNode(this.x, this.y - 1);
+		
+		if (this.y + 1 < grid.getCols() && this.y >= 0) {
+			Node node = grid.getNode(this.x, this.y + 1);
 			if (!node.alreadyVisited && !node.isWall) {
 //				node.setParent(this);
 //				node.setG(this.g + 1);

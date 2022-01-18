@@ -126,58 +126,59 @@ public class Algorithm extends Thread {
 	}
 
 	private void dfs(Node start) {
-//		dfsUntill(start);
+		
+		dfsUntill(start);
 
-		LinkedList<Node> queue = new LinkedList<Node>();
-		queue.addLast(start);
-		start.setAlreadyVisited(true);
-
-		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
-			Node current = queue.pollLast();
-			current.setType(2);
-			panel.repaint();
-			delay(MyUtils.delay);
-
-			if (current.equals(grid.getFinish())) {
-				MyUtils.solving = false;
-				solutionFound = true;
-				extractSolution(current);
-				return;
-			} else {
-				current.setType(1);
-				for (Node child : current.getNeighbors(grid)) {
-					queue.addLast(child);
-					child.setAlreadyVisited(true);
-					child.setType(4);
-				}
-			}
-		}
+//		LinkedList<Node> queue = new LinkedList<Node>();
+//		queue.addLast(start);
+//		start.setAlreadyVisited(true);
+//
+//		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
+//			Node current = queue.pollLast();
+//			current.setType(2);
+//			panel.repaint();
+//			delay(MyUtils.delay);
+//
+//			if (current.equals(grid.getFinish())) {
+//				MyUtils.solving = false;
+//				solutionFound = true;
+//				extractSolution(current);
+//				return;
+//			} else {
+//				current.setType(1);
+//				for (Node child : current.getNeighbors(grid)) {
+//					queue.addLast(child);
+//					child.setAlreadyVisited(true);
+//					child.setType(4);
+//				}
+//			}
+//		}
 
 	}
 
-//	private void dfsUntill(Node node) {
-//		if (!MyUtils.solving || solutionFound) {
-//			return;
-//		}
-//		node.setType(2);
-//		node.setAlreadyVisited(true);
-//		panel.repaint();
-//		delay(MyUtils.delay);
-//
-//		if (node.equals(grid.getFinish())) {
-//			MyUtils.solving = false;
-//			solutionFound = true;
-//			extractSolution(node);
-//			return;
-//		} else {
-//			node.setType(1);
-//			for (Node child : node.getNeighbors(grid)) {
-//				dfsUntill(child);
-//			}
-//
-//		}
-//
-//	}
+	private void dfsUntill(Node node) {
+		if (!MyUtils.solving || solutionFound) {
+			return;
+		}
+		node.setType(2);
+		node.setAlreadyVisited(true);
+		panel.repaint();
+		delay(MyUtils.delay);
+
+		if (node.equals(grid.getFinish())) {
+			MyUtils.solving = false;
+			solutionFound = true;
+			extractSolution(node);
+			return;
+		} else {
+			node.setType(1);
+			for (Node child : node.getNeighbors(grid)) {
+				dfsUntill(child);
+			}
+
+		}
+
+	}
 
 	private void bfs(Node startingNode) {
 		Queue<Node> frontier = new LinkedList<Node>();
