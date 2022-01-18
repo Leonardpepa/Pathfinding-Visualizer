@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import javax.swing.JPanel;
 
-public class Node implements Comparable<Node> {
+public class Node {
 	private int x;
 	private int y;
 	private int g;
@@ -39,56 +39,124 @@ public class Node implements Comparable<Node> {
 	public LinkedList<Node> getNeighbors(Grid grid) {
 
 		LinkedList<Node> neighbors = new LinkedList<Node>();
-
-		if (this.y - 1 >= 0 && this.y < grid.getCols()) {
-			Node node = grid.getNode(this.x, this.y - 1);
-			if (!node.alreadyVisited && !node.isWall) {
-				node.setParent(this);
-				node.setG(this.g + 1);
-				node.setH(heuristic(grid));
-				node.setF();
-				neighbors.add(node);
-			}
-		}
-
+		
 		if (this.x + 1 < grid.getRows() && x >= 0) {
 			Node node = grid.getNode(this.x + 1, this.y);
 			if (!node.alreadyVisited && !node.isWall) {
-				node.setParent(this);
-				node.setG(this.g + 1);
-				node.setH(heuristic(grid));
-				node.setF();
+//				node.setParent(this);
+//				node.setG(this.g + 1);
+//				node.setH(node.heuristic(grid));
+//				node.setF();
+				createNeighbor(node, grid);
 				neighbors.add(node);
 			}
 		}
+		
 		if (this.y + 1 < grid.getCols() && this.y >= 0) {
 			Node node = grid.getNode(this.x, this.y + 1);
 			if (!node.alreadyVisited && !node.isWall) {
-				node.setParent(this);
-				node.setG(this.g + 1);
-				node.setH(heuristic(grid));
-				node.setF();
+//				node.setParent(this);
+//				node.setG(this.g + 1);
+//				node.setH(node.heuristic(grid));
+//				node.setF();
+				createNeighbor(node, grid);
+				neighbors.add(node);
+			}
+		}
+		
+		if (this.x - 1 >= 0 && this.x < grid.getRows()) {
+			Node node = grid.getNode(this.x - 1, this.y);
+			if (!node.alreadyVisited && !node.isWall) {
+//				node.setParent(this);
+//				node.setG(this.g + 1);
+//				node.setH(node.heuristic(grid));
+//				node.setF();
+				createNeighbor(node, grid);
 				neighbors.add(node);
 			}
 		}
 
-		if (this.x - 1 >= 0 && this.x < grid.getRows()) {
-			Node node = grid.getNode(this.x - 1, this.y);
+		
+		if (this.y - 1 >= 0 && this.y < grid.getCols()) {
+			Node node = grid.getNode(this.x, this.y - 1);
 			if (!node.alreadyVisited && !node.isWall) {
-				node.setParent(this);
-				node.setG(this.g + 1);
-				node.setH(heuristic(grid));
-				node.setF();
+//				node.setParent(this);
+//				node.setG(this.g + 1);
+//				node.setH(node.heuristic(grid));
+//				node.setF();
+				createNeighbor(node, grid);
 				neighbors.add(node);
 			}
+		}
+
+		
+
+		if (MyUtils.allowDiagonials) {
+			if (this.x - 1 >= 0 && this.y - 1 >= 0) {
+				Node node = grid.getNode(this.x - 1, this.y - 1);
+				if (!node.alreadyVisited && !node.isWall) {
+//					node.setParent(this);
+//					node.setG(this.g + 1);
+//					node.setH(node.heuristic(grid));
+//					node.setF();
+					createNeighbor(node, grid);
+					neighbors.add(node);
+				}
+			}
+			if (this.x - 1 >= 0 && this.y + 1 < grid.getCols()) {
+				Node node = grid.getNode(this.x - 1, this.y + 1);
+				if (!node.alreadyVisited && !node.isWall) {
+//					node.setParent(this);
+//					node.setG(this.g + 1);
+//					node.setH(node.heuristic(grid));
+//					node.setF();
+					createNeighbor(node, grid);
+					neighbors.add(node);
+				}
+			}
+			if (this.x + 1 < grid.getRows() && this.y + 1 < grid.getCols()) {
+				Node node = grid.getNode(this.x + 1, this.y + 1);
+				if (!node.alreadyVisited && !node.isWall) {
+//					node.setParent(this);
+//					node.setG(this.g + 1);
+//					node.setH(node.heuristic(grid));
+//					node.setF();
+					createNeighbor(node, grid);
+					neighbors.add(node);
+				}
+			}
+
+			if (this.x + 1 < grid.getRows() && this.y - 1 >= 0) {
+				Node node = grid.getNode(this.x + 1, this.y - 1);
+				if (!node.alreadyVisited && !node.isWall) {
+//					node.setParent(this);
+//					node.setG(this.g + 1);
+//					node.setH(node.heuristic(grid));
+//					node.setF();
+					createNeighbor(node, grid);
+					neighbors.add(node);
+				}
+			}
+
 		}
 
 		return neighbors;
 	}
 
+	public void createNeighbor(Node node, Grid grid) {
+		node.setParent(this);
+		node.setG(this.g + 1);
+		node.setH(node.heuristic(grid));
+		node.setF();
+	}
+
 	public int heuristic(Grid grid) {
-		int distance = Math.abs(this.x - grid.getFinish().getX()) + Math.abs(this.y - grid.getFinish().getY());
-//		int distance = (int) Point2D.distance(this.x, this.y, grid.getFinish().getX(), grid.getFinish().getY());
+		int distance;
+		if (MyUtils.allowDiagonials) {
+			distance = (int) Point2D.distance(this.x, this.y, grid.getFinish().getX(), grid.getFinish().getY());
+		} else {
+			distance = Math.abs(this.x - grid.getFinish().getX()) + Math.abs(this.y - grid.getFinish().getY());
+		}
 		return distance;
 	}
 
@@ -267,37 +335,6 @@ public class Node implements Comparable<Node> {
 
 	public void setAlreadyVisited(boolean alreadyVisited) {
 		this.alreadyVisited = alreadyVisited;
-	}
-
-	@Override
-	public int compareTo(Node o) {
-		if (this.equals(o)) {
-			return 0;
-		}
-
-		if (MyUtils.algorithm == 2) {
-			if (this.h < o.getH()) {
-				return 1;
-			} else if (this.h > o.getH()) {
-				return -1;
-			} else {
-				return 1;
-			}
-		} else if (MyUtils.algorithm == 3) {
-			if (this.f < o.getF()) {
-				return 1;
-			} else if (this.f > o.getF()) {
-				return -1;
-			} else {
-				if (this.g < o.getG()) {
-					return 1;
-				}
-				return -1;
-			}
-		}
-
-		return 0;
-
 	}
 
 }

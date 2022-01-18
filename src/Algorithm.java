@@ -1,8 +1,6 @@
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.TreeSet;
 
 import javax.swing.JPanel;
 
@@ -36,78 +34,107 @@ public class Algorithm extends Thread {
 				break;
 			}
 		}
+		MyUtils.solving = false;
+		if (MyUtils.breakAlgo) {
+			grid.initialiseGrid();
+		}
+		panel.repaint();
 	}
 
 	private void astar(Node start) {
-		TreeSet<Node> queue = new TreeSet<Node>();
+		LinkedList<Node> queue = new LinkedList<>();
 		queue.add(start);
-		Node currentNode = null;
+		start.setAlreadyVisited(true);
+
 		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
-			currentNode = queue.pollLast();
-			
-			currentNode.setType(2);
-			currentNode.setAlreadyVisited(true);
+			Node current = queue.pollFirst();
+			current.setType(2);
 			panel.repaint();
 			delay(MyUtils.delay);
 
-			if (currentNode.equals(grid.getFinish())) {
+			if (current.equals(grid.getFinish())) {
 				MyUtils.solving = false;
 				solutionFound = true;
-				extractSolution(currentNode);
-				continue;
+				extractSolution(current);
+				return;
 			} else {
-				currentNode.setType(1);
-				for (Node neighbor : currentNode.getNeighbors(grid)) {
-					queue.add(neighbor);
-					neighbor.setAlreadyVisited(true);
+				current.setType(1);
+				for (Node child : current.getNeighbors(grid)) {
+					queue.add(child);
+					child.setAlreadyVisited(true);
+					child.setType(4);
 				}
+				queue.sort(new Comparator<Node>() {
+					public int compare(Node n1, Node n2) {
+						return n1.getF() - n2.getF();
+					}
+				});
 			}
 
 		}
-		MyUtils.solving = false;
-		if (MyUtils.breakAlgo) {
-			grid.initialiseGrid();
-		}
-		panel.repaint();
 	}
 
 	private void best(Node start) {
-		LinkedList<Node> queue = new LinkedList<Node>();
+		LinkedList<Node> queue = new LinkedList<>();
 		queue.add(start);
-		Node currentNode = null;
+		start.setAlreadyVisited(true);
+
 		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
-			currentNode = queue.pollLast();
-			
-			currentNode.setType(2);
-			currentNode.setAlreadyVisited(true);
+			Node current = queue.poll();
+			current.setType(2);
 			panel.repaint();
 			delay(MyUtils.delay);
-
-			if (currentNode.equals(grid.getFinish())) {
+			System.out.println(current.getH() + "  " + current.getF() + "  " + current.getG());
+			if (current.equals(grid.getFinish())) {
 				MyUtils.solving = false;
 				solutionFound = true;
-				extractSolution(currentNode);
-				continue;
+				extractSolution(current);
+				return;
 			} else {
-				currentNode.setType(1);
-				for (Node neighbor : currentNode.getNeighbors(grid)) {
-					queue.add(neighbor);
-					neighbor.setAlreadyVisited(true);
+				current.setType(1);
+				for (Node child : current.getNeighbors(grid)) {
+					queue.add(child);
+					child.setAlreadyVisited(true);
+					child.setType(4);
 				}
-				Collections.sort(queue);
+				queue.sort(new Comparator<Node>() {
+					public int compare(Node n1, Node n2) {
+						return n1.getH() - n2.getH();
+					}
+				});
 			}
 
 		}
-		MyUtils.solving = false;
-		if (MyUtils.breakAlgo) {
-			grid.initialiseGrid();
-		}
-		panel.repaint();
 	}
 
 	private void dfs(Node start) {
-		dfsUntill(start);
-		MyUtils.solving = false;
+//		dfsUntill(start);
+
+		LinkedList<Node> queue = new LinkedList<Node>();
+		queue.addLast(start);
+		start.setAlreadyVisited(true);
+
+		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
+			Node current = queue.pollLast();
+			current.setType(2);
+			panel.repaint();
+			delay(MyUtils.delay);
+
+			if (current.equals(grid.getFinish())) {
+				MyUtils.solving = false;
+				solutionFound = true;
+				extractSolution(current);
+				return;
+			} else {
+				current.setType(1);
+				for (Node child : current.getNeighbors(grid)) {
+					queue.addLast(child);
+					child.setAlreadyVisited(true);
+					child.setType(4);
+				}
+			}
+		}
+
 	}
 
 	private void dfsUntill(Node node) {
@@ -129,6 +156,7 @@ public class Algorithm extends Thread {
 			for (Node child : node.getNeighbors(grid)) {
 				dfsUntill(child);
 			}
+
 		}
 
 	}
@@ -159,12 +187,6 @@ public class Algorithm extends Thread {
 			}
 
 		}
-
-		MyUtils.solving = false;
-		if (MyUtils.breakAlgo) {
-			grid.initialiseGrid();
-		}
-		panel.repaint();
 	}
 
 	public void extractSolution(Node node) {

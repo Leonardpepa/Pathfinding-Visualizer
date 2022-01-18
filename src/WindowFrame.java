@@ -33,6 +33,7 @@ public class WindowFrame extends JFrame {
 
 		this.setContentPane(container);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("Path Finding Visualizer");
 		this.getContentPane().setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.pack();
 		this.setVisible(true);

@@ -87,27 +87,6 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(MyUtils.solving) {
-			return;
-		}
-		int x = e.getX() / Node.size;
-		int y = e.getY() / Node.size;
-
-		if (x < 0 || y >= grid.getCols()) {
-			return;
-		}
-
-//		if (SwingUtilities.isRightMouseButton(e)) {
-//			updateFinish(x, y);
-//		}
-//
-//		if (SwingUtilities.isLeftMouseButton(e)) {
-//			updateStart(x, y);
-//		}
-
-//		if (SwingUtilities.isMiddleMouseButton(e)) {
-//			updateWall(x, y);
-//		}
 		this.revalidate();
 		this.repaint();
 	}
@@ -117,13 +96,10 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		this.revalidate();
 		this.repaint();
 	}
-	private void updateWall(int x, int y) {
-		grid.getNode(x, y).setWall(!grid.getNode(x, y).isWall());
-	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(MyUtils.solving) {
+		if (MyUtils.solving) {
 			return;
 		}
 		int x = e.getX() / Node.size;
@@ -136,7 +112,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(MyUtils.solving) {
+		if (MyUtils.solving) {
 			return;
 		}
 		int x = e.getX() / Node.size;
@@ -146,17 +122,6 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 			return;
 		}
 
-//		if (SwingUtilities.isRightMouseButton(e)) {
-//			updateFinish(x, y);
-//		}
-//
-//		if (SwingUtilities.isLeftMouseButton(e)) {
-//			updateStart(x, y);
-//		}
-
-		if (SwingUtilities.isRightMouseButton(e)) {
-			updateWall(x, y);
-		}
 		current = null;
 		this.revalidate();
 		this.repaint();
@@ -176,7 +141,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if(MyUtils.solving) {
+		if (MyUtils.solving) {
 			return;
 		}
 		int x = e.getX() / Node.size;
@@ -184,7 +149,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		if (x < 0 || y >= grid.getCols()) {
 			return;
 		}
-		
+
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			if (current != null && current.isStart()) {
 				current = grid.getNode(x, y);
@@ -199,15 +164,14 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 				grid.setFinish(current);
 			}
 		}
-		
-		
-		if (SwingUtilities.isRightMouseButton(e)) {
+
+		if (SwingUtilities.isLeftMouseButton(e)) {
 			if (current != null && !current.isFinish() && !current.isStart()) {
 				current = grid.getNode(x, y);
 				current.setWall(true);
 			}
 		}
-		if (SwingUtilities.isMiddleMouseButton(e)) {
+		if (SwingUtilities.isRightMouseButton(e)) {
 			if (current != null && !current.isFinish() && !current.isStart()) {
 				current = grid.getNode(x, y);
 				current.setWall(false);
