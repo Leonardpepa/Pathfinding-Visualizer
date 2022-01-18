@@ -66,6 +66,9 @@ public class Algorithm extends Thread {
 				}
 				queue.sort(new Comparator<Node>() {
 					public int compare(Node n1, Node n2) {
+						if (n1.equals(n2)) {
+							return 0;
+						}
 						if (n1.getF() > n2.getF()) {
 							return 1;
 						} else if (n1.getF() < n2.getF()) {
@@ -105,6 +108,9 @@ public class Algorithm extends Thread {
 				}
 				queue.sort(new Comparator<Node>() {
 					public int compare(Node n1, Node n2) {
+						if (n1.equals(n2)) {
+							return 0;
+						}
 						if (n1.getH() > n2.getH()) {
 							return 1;
 						} else if (n1.getH() < n2.getH()) {

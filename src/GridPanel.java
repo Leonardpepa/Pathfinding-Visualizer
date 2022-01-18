@@ -87,8 +87,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		this.revalidate();
-		this.repaint();
+	
 	}
 
 	public void resetPath() {
