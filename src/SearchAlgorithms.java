@@ -4,13 +4,13 @@ import java.util.Queue;
 
 import javax.swing.JPanel;
 
-public class Algorithm extends Thread {
+public class SearchAlgorithms extends Thread {
 
 	private Grid grid;
 	private JPanel panel;
 	private boolean solutionFound = false;
 	
-	public Algorithm(Grid grid, JPanel panel) {
+	public SearchAlgorithms(Grid grid, JPanel panel) {
 		this.grid = grid;
 		this.panel = panel;
 	}

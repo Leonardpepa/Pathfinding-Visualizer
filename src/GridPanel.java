@@ -104,7 +104,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		}
 		int x = e.getX() / Node.size;
 		int y = e.getY() / Node.size;
-		if (x < 0 || y >= grid.getCols()) {
+		if (x < 0 || y >= grid.getCols() || y < 0 || x >= grid.getRows()) {
 			return;
 		}
 		if (SwingUtilities.isLeftMouseButton(e)) {
@@ -130,7 +130,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		int x = e.getX() / Node.size;
 		int y = e.getY() / Node.size;
 
-		if (x < 0 || y >= grid.getCols()) {
+		if (x < 0 || y >= grid.getCols() || y < 0 || x >= grid.getRows()) {
 			return;
 		}
 
@@ -169,7 +169,8 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		}
 		int x = e.getX() / Node.size;
 		int y = e.getY() / Node.size;
-		if (x < 0 || y >= grid.getCols()) {
+		
+		if (x < 0 || y >= grid.getCols() || y < 0 || x >= grid.getRows()) {
 			return;
 		}
 
