@@ -2,6 +2,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -9,7 +11,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class GridPanel extends JPanel implements MouseListener, MouseMotionListener {
+public class GridPanel extends JPanel implements MouseListener, MouseMotionListener{
 
 	private static final long serialVersionUID = 3728396685715564240L;
 	private Grid grid;
@@ -209,5 +211,6 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 	public void mouseMoved(MouseEvent e) {
 
 	}
+
 
 }

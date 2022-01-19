@@ -93,7 +93,6 @@ public class SearchAlgorithms extends Thread {
 			current.setType(Type.CURRENT);
 			panel.repaint();
 			delay(MyUtils.delay);
-
 			if (current.equals(grid.getFinish())) {
 				extractSolution(current);
 				MyUtils.solving = false;
@@ -196,6 +195,7 @@ public class SearchAlgorithms extends Thread {
 				extractSolution(currentNode);
 				MyUtils.solving = false;
 				solutionFound = true;
+				System.out.println("solved");
 				continue;
 			} else {
 				currentNode.setType(Type.VISITED);
@@ -216,7 +216,7 @@ public class SearchAlgorithms extends Thread {
 		
 		Node parent = node.getParent();
 
-		while (parent != null) {
+		while (parent != grid.getStart()) {
 			parent.setType(Type.PATH);
 			panel.repaint();
 			delay(10);
