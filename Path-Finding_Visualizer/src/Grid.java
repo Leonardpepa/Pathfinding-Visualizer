@@ -42,6 +42,7 @@ public class Grid {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				Node node = grid[i][j];
+				node.setParent(null);
 				node.setAlreadyVisited(false);
 				node.setType(Type.DEFAULT);
 				node.setG(0);
