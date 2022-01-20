@@ -135,12 +135,12 @@ public class ControlsPanel extends JPanel {
 		});
 
 		sizeLabel = new JLabel("Size: 20x20");
-		sizeLabel.setBounds(30, 300, 150, 20);
+		sizeLabel.setBounds(30, 290, 150, 20);
 
 		size = new JSlider(20, 60, Node.size);
 		size.setMajorTickSpacing(10);
 		size.setMinorTickSpacing(10);
-		size.setBounds(25, 325, 150, 20);
+		size.setBounds(25, 315, 150, 20);
 
 		size.addChangeListener(new ChangeListener() {
 			@Override
@@ -159,11 +159,12 @@ public class ControlsPanel extends JPanel {
 		});
 
 		delayLabel = new JLabel("Delay: 30ms");
-		delayLabel.setBounds(30, 365, 150, 20);
+		delayLabel.setBounds(30, 345, 150, 20);
 
 		delay = new JSlider(0, 100, MyUtils.delay);
 		delay.setMajorTickSpacing(10);
 		delay.setMinorTickSpacing(10);
+		delay.setBounds(25, 370, 150, 20);
 
 		delay.addChangeListener(new ChangeListener() {
 			@Override
@@ -173,7 +174,6 @@ public class ControlsPanel extends JPanel {
 			}
 		});
 
-		delay.setBounds(25, 390, 150, 20);
 
 		this.add(search);
 		this.add(reset);

@@ -19,6 +19,7 @@ public class SearchAlgorithms extends Thread {
 	public void run() {
 		if (MyUtils.solving) {
 			MyUtils.breakAlgo = false;
+			solutionFound = false;
 			switch (MyUtils.algorithm) {
 			case 0:
 				bfs(grid.getStart());
@@ -93,6 +94,7 @@ public class SearchAlgorithms extends Thread {
 			current.setType(Type.CURRENT);
 			panel.repaint();
 			delay(MyUtils.delay);
+			
 			if (current.equals(grid.getFinish())) {
 				extractSolution(current);
 				MyUtils.solving = false;
@@ -125,34 +127,7 @@ public class SearchAlgorithms extends Thread {
 	}
 
 	private void dfs(Node start) {
-
 		dfsUntill(start);
-
-//		LinkedList<Node> queue = new LinkedList<Node>();
-//		queue.addLast(start);
-//		start.setAlreadyVisited(true);
-//
-//		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
-//			Node current = queue.pollLast();
-//			current.setType(Type.CURRENT);
-//			panel.repaint();
-//			delay(MyUtils.delay);
-//
-//			if (current.equals(grid.getFinish())) {
-//				MyUtils.solving = false;
-//				solutionFound = true;
-//				extractSolution(current);
-//				return;
-//			} else {
-//				current.setType(Type.VISITED);
-//				for (Node child : current.getNeighbors(grid)) {
-//					queue.addLast(child);
-//					child.setAlreadyVisited(true);
-//					child.setType(Type.FRONTIER);
-//				}
-//			}
-//		}
-
 	}
 
 	private void dfsUntill(Node node) {
@@ -205,7 +180,6 @@ public class SearchAlgorithms extends Thread {
 				extractSolution(currentNode);
 				MyUtils.solving = false;
 				solutionFound = true;
-				System.out.println("solved");
 				continue;
 			} else {
 				currentNode.setType(Type.VISITED);

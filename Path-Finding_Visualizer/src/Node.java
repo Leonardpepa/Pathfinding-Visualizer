@@ -13,12 +13,7 @@ public class Node {
 	private double h;
 	private double f;
 	private Type type = Type.DEFAULT; // default value
-	// type 0: starting node
-	// type 1: visited node
-	// type 2: current node
-	// type 3: ending node
-	// type 4: frontier node
-	// type 5: path node
+	// type of node is responsible for the color
 
 	private boolean isWall = false;
 	private boolean isStart = false;
@@ -38,7 +33,7 @@ public class Node {
 	public LinkedList<Node> getNeighbors(Grid grid) {
 
 		LinkedList<Node> neighbors = new LinkedList<Node>();
-		
+
 		if (this.y + 1 < grid.getCols() && this.y >= 0) {
 			Node node = grid.getNode(this.x, this.y + 1);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -46,7 +41,7 @@ public class Node {
 				neighbors.add(node);
 			}
 		}
-		
+
 		if (this.x + 1 < grid.getRows() && x >= 0) {
 			Node node = grid.getNode(this.x + 1, this.y);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -55,7 +50,6 @@ public class Node {
 			}
 		}
 
-		
 		if (this.y - 1 >= 0 && this.y < grid.getCols()) {
 			Node node = grid.getNode(this.x, this.y - 1);
 			if (!node.alreadyVisited && !node.isWall) {
@@ -149,6 +143,8 @@ public class Node {
 		case FRONTIER:
 			g.setColor(Color.GREEN);
 			break;
+		case WALL:
+			return;
 		case PATH:
 			g.setColor(Color.yellow);
 			break;
@@ -280,6 +276,11 @@ public class Node {
 	}
 
 	public void setWall(boolean isWall) {
+		if (isWall) {
+			this.setType(Type.WALL);
+		} else {
+			this.setType(Type.DEFAULT);
+		}
 		this.isWall = isWall;
 	}
 
