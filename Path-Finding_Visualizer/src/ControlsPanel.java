@@ -218,8 +218,10 @@ public class ControlsPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,
 						"Move Starting Node: drag the starting node with left click pressed" + System.lineSeparator()
+								+ System.lineSeparator()
 								+ "Move Target Node: drag the target node with left click pressed"
-								+ System.lineSeparator() + "Place Wall Node: press or drag empty cells with left click"
+								+ System.lineSeparator() + System.lineSeparator()
+								+ "Place Wall Node: press or drag empty cells with left click" + System.lineSeparator()
 								+ System.lineSeparator() + "Erase Wall Node: press or drag wall cells with right click",
 						"Instructions", JOptionPane.INFORMATION_MESSAGE);
 			}
