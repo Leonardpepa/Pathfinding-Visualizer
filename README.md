@@ -33,7 +33,7 @@ This is a tool to visualize search algorithms
 * Visualize: Press the visualize button
 
 ## Preview
-![preview-image](https://github.com/Leonardpepa/Path-Finding-Visualizer/edit/master/screenshots/screenshot1.JPG?raw=true)
+![preview-image](https://github.com/Leonardpepa/Path-Finding-Visualizer/master/screenshots/screenshot1.JPG?raw=true)
 
 
 # Instalation
