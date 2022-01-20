@@ -41,5 +41,5 @@ cd Path-Finding-Visualizer
 
 # Execution
 * 1st way: Run the Path Finding Visualizer.jar
-* 2nd way: Run from source via Main.java 
+* 2nd way: Run from source code via Main.java 
 
