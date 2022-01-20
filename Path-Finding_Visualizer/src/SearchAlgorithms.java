@@ -9,7 +9,7 @@ public class SearchAlgorithms extends Thread {
 	private Grid grid;
 	private JPanel panel;
 	private boolean solutionFound = false;
-	
+
 	public SearchAlgorithms(Grid grid, JPanel panel) {
 		this.grid = grid;
 		this.panel = panel;
@@ -125,7 +125,7 @@ public class SearchAlgorithms extends Thread {
 	}
 
 	private void dfs(Node start) {
-		
+
 		dfsUntill(start);
 
 //		LinkedList<Node> queue = new LinkedList<Node>();
@@ -171,7 +171,17 @@ public class SearchAlgorithms extends Thread {
 			return;
 		} else {
 			node.setType(Type.VISITED);
-			for (Node child : node.getNeighbors(grid)) {
+			LinkedList<Node> children = node.getNeighbors(grid);
+			for (Node child : children) {
+				if (!solutionFound) {
+					for (Node temp : children) {
+						if (temp.equals(child)) {
+							continue;
+						}
+						temp.setType(Type.FRONTIER);
+					}
+				}
+
 				dfsUntill(child);
 			}
 
@@ -210,10 +220,10 @@ public class SearchAlgorithms extends Thread {
 	}
 
 	public void extractSolution(Node node) {
-		if(!MyUtils.solving) {
+		if (!MyUtils.solving) {
 			return;
 		}
-		
+
 		Node parent = node.getParent();
 
 		while (parent != grid.getStart()) {
