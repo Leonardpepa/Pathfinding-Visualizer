@@ -34,7 +34,11 @@ This is a tool to visualize search algorithms
 
 ## Preview
 ![preview-image](https://github.com/Leonardpepa/Path-Finding-Visualizer/blob/master/screenshots/screenshot1.JPG)
+
+### Path Finding
 ![preview-image](https://github.com/Leonardpepa/Path-Finding-Visualizer/blob/master/screenshots/screenshot2.JPG)
+
+### Random maze
 ![preview-image](https://github.com/Leonardpepa/Path-Finding-Visualizer/blob/master/screenshots/screenshot3.JPG)
 
 ### Diagonial moves
