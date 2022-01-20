@@ -36,6 +36,8 @@ This is a tool to visualize search algorithms
 ![preview-image](https://github.com/Leonardpepa/Path-Finding-Visualizer/blob/master/screenshots/screenshot1.JPG)
 ![preview-image](https://github.com/Leonardpepa/Path-Finding-Visualizer/blob/master/screenshots/screenshot2.JPG)
 ![preview-image](https://github.com/Leonardpepa/Path-Finding-Visualizer/blob/master/screenshots/screenshot3.JPG)
+
+### Diagonial moves
 ![preview-image](https://github.com/Leonardpepa/Path-Finding-Visualizer/blob/master/screenshots/screenshot4.JPG)
 
 # Instalation
