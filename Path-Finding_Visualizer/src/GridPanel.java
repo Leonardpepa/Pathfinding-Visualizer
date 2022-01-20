@@ -9,7 +9,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class GridPanel extends JPanel implements MouseListener, MouseMotionListener{
+public class GridPanel extends JPanel implements MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 3728396685715564240L;
 	private Grid grid;
@@ -33,7 +33,10 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 	public void updateGrid(int cellSize) {
 		if (!MyUtils.solving) {
 			Node.size = cellSize;
-			grid = new Grid(height / Node.size, width / Node.size);
+			int rows = (int) Math.floor(height / Node.size);
+			int cols = (int) Math.floor(width / Node.size);
+
+			grid = new Grid(rows, cols);
 			this.revalidate();
 			this.repaint();
 		}
@@ -169,7 +172,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		}
 		int x = e.getX() / Node.size;
 		int y = e.getY() / Node.size;
-		
+
 		if (x < 0 || y >= grid.getCols() || y < 0 || x >= grid.getRows()) {
 			return;
 		}
@@ -209,6 +212,5 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 	public void mouseMoved(MouseEvent e) {
 
 	}
-
 
 }

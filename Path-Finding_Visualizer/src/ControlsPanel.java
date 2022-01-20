@@ -1,4 +1,7 @@
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -7,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -25,9 +29,17 @@ public class ControlsPanel extends JPanel {
 	private JLabel sizeLabel;
 	private JLabel delayLabel;
 	private JCheckBox allowDiagonials;
-
+	private JLabel copyright;
 	private String[] algorithmsName = { "Breadth first search", "Depth first search", "Best first search",
 			"A* search" };
+	private JLabel start;
+	private JLabel target;
+	private JLabel current;
+	private JLabel visited;
+	private JLabel frontier;
+	private JLabel path;
+	private JLabel wall;
+	private JButton help;
 
 	public ControlsPanel(int width, int height, GridPanel gridPanel) {
 		this.setPreferredSize(new Dimension(width, height));
@@ -35,7 +47,7 @@ public class ControlsPanel extends JPanel {
 		this.setLayout(null);
 
 		search = new JButton("Visualize");
-		search.setBounds(25, 20, 150, 30);
+		search.setBounds(25, 10, 150, 30);
 		search.addActionListener(new ActionListener() {
 
 			@Override
@@ -44,40 +56,15 @@ public class ControlsPanel extends JPanel {
 					return;
 				}
 				gridPanel.resetPath();
-				
+
 				MyUtils.solving = true;
 				SearchAlgorithms algo = new SearchAlgorithms(gridPanel.getGrid(), gridPanel);
 				algo.start();
 			}
 		});
-		reset = new JButton("Reset grid");
-		reset.setBounds(25, 120, 150, 30);
-		reset.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				MyUtils.solving = false;
 
-				gridPanel.resetGrid();
-				gridPanel.revalidate();
-				gridPanel.repaint();
-			}
-		});
-
-		resetPath = new JButton("Reset path");
-		resetPath.setBounds(25, 170, 150, 30);
-		resetPath.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (MyUtils.solving) {
-					return;
-				}
-				gridPanel.resetPath();
-				gridPanel.repaint();
-			}
-		});
-		setBounds(25, 70, 150, 30);
 		generate = new JButton("Generate maze");
-		generate.setBounds(25, 70, 150, 30);
+		generate.setBounds(25, 50, 150, 30);
 		generate.addActionListener(new ActionListener() {
 
 			@Override
@@ -102,9 +89,35 @@ public class ControlsPanel extends JPanel {
 			}
 		});
 
+		reset = new JButton("Reset grid");
+		reset.setBounds(25, 90, 150, 30);
+		reset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MyUtils.solving = false;
+
+				gridPanel.resetGrid();
+				gridPanel.revalidate();
+				gridPanel.repaint();
+			}
+		});
+
+		resetPath = new JButton("Reset path");
+		resetPath.setBounds(25, 130, 150, 30);
+		resetPath.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (MyUtils.solving) {
+					return;
+				}
+				gridPanel.resetPath();
+				gridPanel.repaint();
+			}
+		});
+
 		algorithms = new JComboBox<>(algorithmsName);
 		algorithms.setSelectedIndex(0);
-		algorithms.setBounds(25, 220, 150, 30);
+		algorithms.setBounds(25, 175, 150, 30);
 
 		algorithms.addActionListener(new ActionListener() {
 			@Override
@@ -118,11 +131,11 @@ public class ControlsPanel extends JPanel {
 		});
 
 		allowDiagonials = new JCheckBox("Allow diagonial moves");
-		allowDiagonials.setBounds(25, 260, 200, 20);
+		allowDiagonials.setBounds(20, 215, 200, 20);
 		allowDiagonials.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if(MyUtils.solving) {
+				if (MyUtils.solving) {
 					if (MyUtils.allowDiagonials) {
 						allowDiagonials.setSelected(true);
 					} else {
@@ -135,12 +148,12 @@ public class ControlsPanel extends JPanel {
 		});
 
 		sizeLabel = new JLabel("Size: 20x20");
-		sizeLabel.setBounds(30, 290, 150, 20);
+		sizeLabel.setBounds(24, 245, 150, 20);
 
 		size = new JSlider(20, 60, Node.size);
 		size.setMajorTickSpacing(10);
 		size.setMinorTickSpacing(10);
-		size.setBounds(25, 315, 150, 20);
+		size.setBounds(18, 270, 150, 20);
 
 		size.addChangeListener(new ChangeListener() {
 			@Override
@@ -159,12 +172,12 @@ public class ControlsPanel extends JPanel {
 		});
 
 		delayLabel = new JLabel("Delay: 30ms");
-		delayLabel.setBounds(30, 345, 150, 20);
+		delayLabel.setBounds(24, 295, 150, 20);
 
 		delay = new JSlider(0, 100, MyUtils.delay);
 		delay.setMajorTickSpacing(10);
 		delay.setMinorTickSpacing(10);
-		delay.setBounds(25, 370, 150, 20);
+		delay.setBounds(18, 320, 150, 20);
 
 		delay.addChangeListener(new ChangeListener() {
 			@Override
@@ -174,6 +187,43 @@ public class ControlsPanel extends JPanel {
 			}
 		});
 
+		copyright = new JLabel("© 2021 Leonard Pepa ics20033");
+		copyright.setBounds(10, (int) (this.getPreferredSize().getHeight() - 30), 200, 20);
+
+		start = new JLabel("Starting node");
+		start.setBounds(50, 350, 100, 15);
+
+		target = new JLabel("Target node");
+		target.setBounds(50, 375, 100, 15);
+
+		current = new JLabel("Current node");
+		current.setBounds(50, 400, 100, 15);
+
+		visited = new JLabel("Visited node");
+		visited.setBounds(50, 425, 100, 15);
+
+		frontier = new JLabel("Frontier node");
+		frontier.setBounds(50, 450, 100, 15);
+
+		path = new JLabel("Path node");
+		path.setBounds(50, 475, 100, 15);
+
+		wall = new JLabel("Wall node");
+		wall.setBounds(50, 500, 100, 15);
+
+		help = new JButton("** Help **");
+		help.setBounds(25, (int) (this.getPreferredSize().getHeight() - 70), 150, 30);
+		help.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null,
+						"Move Starting Node: drag the starting node with left click pressed" + System.lineSeparator()
+								+ "Move Target Node: drag the target node with left click pressed"
+								+ System.lineSeparator() + "Place Wall Node: press or drag empty cells with left click"
+								+ System.lineSeparator() + "Erase Wall Node: press or drag wall cells with right click",
+						"Instructions", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
 
 		this.add(search);
 		this.add(reset);
@@ -185,7 +235,42 @@ public class ControlsPanel extends JPanel {
 		this.add(delay);
 		this.add(resetPath);
 		this.add(allowDiagonials);
+		this.add(copyright);
+		this.add(start);
+		this.add(target);
+		this.add(current);
+		this.add(visited);
+		this.add(frontier);
+		this.add(path);
+		this.add(wall);
+		this.add(help);
+	}
 
+	@Override
+
+	public void paintComponent(Graphics graphics) {
+		Graphics2D g = (Graphics2D) graphics;
+		super.paintComponent(g);
+		g.setColor(Color.blue);
+		g.fillRect(25, 350, 15, 15);
+
+		g.setColor(Color.red);
+		g.fillRect(25, 375, 15, 15);
+
+		g.setColor(Color.magenta);
+		g.fillRect(25, 400, 15, 15);
+
+		g.setColor(Color.cyan);
+		g.fillRect(25, 425, 15, 15);
+
+		g.setColor(Color.green);
+		g.fillRect(25, 450, 15, 15);
+
+		g.setColor(Color.yellow);
+		g.fillRect(25, 475, 15, 15);
+
+		g.setColor(Color.black);
+		g.fillRect(25, 500, 15, 15);
 	}
 
 	private static final long serialVersionUID = -7860009947400256170L;

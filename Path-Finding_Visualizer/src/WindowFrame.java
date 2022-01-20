@@ -13,8 +13,8 @@ public class WindowFrame extends JFrame {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 
-	public static int rows = HEIGHT / Node.size;
-	public static int cols = HEIGHT / Node.size;
+	public static int rows = (int) Math.floor(HEIGHT / Node.size);
+	public static int cols = (int) Math.floor(HEIGHT / Node.size);
 
 	public WindowFrame() {
 

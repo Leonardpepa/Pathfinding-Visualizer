@@ -17,6 +17,11 @@ public class Grid {
 		grid = new Node[rows][cols];
 		initialiseGrid();
 	}
+	
+	public Grid cloneGrid() {
+		
+		return null;
+	}
 
 	public void initialiseGrid() {
 		for (int i = 0; i < rows; i++) {
