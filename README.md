@@ -32,6 +32,9 @@ This is a tool to visualize search algorithms
 * Reset path: You can only reset the path when the algorithm is done
 * Visualize: Press the visualize button
 
+## Preview
+![preview-image](https://github.com/Leonardpepa/Path-Finding-Visualizer/edit/master/screenshot1.JPEG?raw=true)
+
 
 # Instalation
 ```terminal
