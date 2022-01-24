@@ -75,7 +75,7 @@ public class SearchAlgorithms extends Thread {
 						} else if (n1.getF() < n2.getF()) {
 							return -1;
 						} else {
-							return 0;
+							return 1;
 						}
 					}
 				});
@@ -117,7 +117,7 @@ public class SearchAlgorithms extends Thread {
 						} else if (n1.getH() < n2.getH()) {
 							return -1;
 						} else {
-							return 0;
+							return 1;
 						}
 					}
 				});
