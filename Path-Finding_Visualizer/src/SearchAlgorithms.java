@@ -1,7 +1,7 @@
 import java.awt.Cursor;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.TreeSet;
 
 import javax.swing.JPanel;
 
@@ -46,13 +46,15 @@ public class SearchAlgorithms extends Thread {
 	}
 
 	private void astar(Node start) {
-		LinkedList<Node> queue = new LinkedList<>();
+		TreeSet<Node> queue = new TreeSet<>();
 		queue.add(start);
 		start.setAlreadyVisited(true);
 
 		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
 			Node current = queue.pollFirst();
 			current.setType(Type.CURRENT);
+			
+			panel.revalidate();
 			panel.repaint();
 			delay(MyUtils.delay);
 
@@ -68,33 +70,21 @@ public class SearchAlgorithms extends Thread {
 					child.setAlreadyVisited(true);
 					child.setType(Type.FRONTIER);
 				}
-				queue.sort(new Comparator<Node>() {
-					public int compare(Node n1, Node n2) {
-						if (n1.equals(n2)) {
-							return 0;
-						}
-						if (n1.getF() > n2.getF()) {
-							return 1;
-						} else if (n1.getF() < n2.getF()) {
-							return -1;
-						} else {
-							return 1;
-						}
-					}
-				});
 			}
 
 		}
 	}
 
 	private void best(Node start) {
-		LinkedList<Node> queue = new LinkedList<>();
+		TreeSet<Node> queue = new TreeSet<>();
 		queue.add(start);
 		start.setAlreadyVisited(true);
 
 		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
-			Node current = queue.poll();
+			Node current = queue.pollFirst();
 			current.setType(Type.CURRENT);
+			
+			panel.revalidate();
 			panel.repaint();
 			delay(MyUtils.delay);
 
@@ -110,20 +100,6 @@ public class SearchAlgorithms extends Thread {
 					child.setAlreadyVisited(true);
 					child.setType(Type.FRONTIER);
 				}
-				queue.sort(new Comparator<Node>() {
-					public int compare(Node n1, Node n2) {
-						if (n1.equals(n2)) {
-							return 0;
-						}
-						if (n1.getH() > n2.getH()) {
-							return 1;
-						} else if (n1.getH() < n2.getH()) {
-							return -1;
-						} else {
-							return 1;
-						}
-					}
-				});
 			}
 
 		}
@@ -139,6 +115,8 @@ public class SearchAlgorithms extends Thread {
 		}
 		node.setType(Type.CURRENT);
 		node.setAlreadyVisited(true);
+		
+		panel.revalidate();
 		panel.repaint();
 		delay(MyUtils.delay);
 
@@ -175,7 +153,8 @@ public class SearchAlgorithms extends Thread {
 		while (MyUtils.solving && !frontier.isEmpty() && !solutionFound) {
 			currentNode = frontier.poll();
 			currentNode.setType(Type.CURRENT);
-			currentNode.setAlreadyVisited(true);
+	
+			panel.revalidate();
 			panel.repaint();
 			delay(MyUtils.delay);
 

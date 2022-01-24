@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import javax.swing.JPanel;
 
-public class Node {
+public class Node implements Comparable<Node> {
 	private int x;
 	private int y;
 	private int g;
@@ -49,7 +49,6 @@ public class Node {
 				neighbors.add(node);
 			}
 		}
-
 
 		if (this.y - 1 >= 0 && this.y < grid.getCols()) {
 			Node node = grid.getNode(this.x, this.y - 1);
@@ -303,6 +302,38 @@ public class Node {
 
 	public void setAlreadyVisited(boolean alreadyVisited) {
 		this.alreadyVisited = alreadyVisited;
+	}
+
+	@Override
+	public int compareTo(Node n2) {
+		switch (MyUtils.algorithm) {
+		case 2:
+			if (this.equals(n2)) {
+				return 0;
+			}
+			if (this.getH() > n2.getH()) {
+				return 1;
+			} else if (this.getH() < n2.getH()) {
+				return -1;
+			} else {
+				return 1;
+			}
+		case 3:
+			if (this.equals(n2)) {
+				return 0;
+			}
+			if (this.getF() > n2.getF()) {
+				return 1;
+			} else if (this.getF() < n2.getF()) {
+				return -1;
+			} else {
+				return 1;
+			}
+		default:
+			break;
+		}
+
+		return 0;
 	}
 
 }
