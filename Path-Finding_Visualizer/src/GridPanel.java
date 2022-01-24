@@ -1,5 +1,6 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -149,6 +150,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		}
 
 		current = null;
+		this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		this.revalidate();
 		this.repaint();
 	}
@@ -210,7 +212,23 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		int x = e.getX() / Node.size;
+		int y = e.getY() / Node.size;
 
+		if (x < 0 || y >= grid.getCols() || y < 0 || x >= grid.getRows()) {
+			return;
+		}
+
+		Node node = grid.getNode(x, y);
+
+		if (MyUtils.solving) {
+			this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		} else if (node != null && (node.isStart() || node.isFinish())) {
+			this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+		} else {
+			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		}
+		this.repaint();
 	}
 
 }
