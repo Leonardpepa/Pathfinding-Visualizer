@@ -228,6 +228,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		} else {
 			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
+		this.revalidate();
 		this.repaint();
 	}
 

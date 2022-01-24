@@ -1,3 +1,4 @@
+import java.awt.Cursor;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -39,6 +40,8 @@ public class SearchAlgorithms extends Thread {
 		if (MyUtils.breakAlgo) {
 			grid.initialiseGrid();
 		}
+		panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		panel.revalidate();
 		panel.repaint();
 	}
 
