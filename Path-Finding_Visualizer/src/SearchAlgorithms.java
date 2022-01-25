@@ -184,10 +184,12 @@ public class SearchAlgorithms extends Thread {
 
 		while (!grid.getStart().equals(parent)) {
 			parent.setType(Type.PATH);
+			panel.revalidate();
 			panel.repaint();
 			delay(10);
 			parent = parent.getParent();
 		}
+		panel.revalidate();
 		panel.repaint();
 	}
 
