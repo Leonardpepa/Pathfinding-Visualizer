@@ -53,7 +53,7 @@ public class SearchAlgorithms extends Thread {
 		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
 			Node current = queue.pollFirst();
 			current.setType(Type.CURRENT);
-			
+
 			panel.revalidate();
 			panel.repaint();
 			delay(MyUtils.delay);
@@ -83,7 +83,7 @@ public class SearchAlgorithms extends Thread {
 		while (MyUtils.solving && !solutionFound && !queue.isEmpty()) {
 			Node current = queue.pollFirst();
 			current.setType(Type.CURRENT);
-			
+
 			panel.revalidate();
 			panel.repaint();
 			delay(MyUtils.delay);
@@ -115,7 +115,7 @@ public class SearchAlgorithms extends Thread {
 		}
 		node.setType(Type.CURRENT);
 		node.setAlreadyVisited(true);
-		
+
 		panel.revalidate();
 		panel.repaint();
 		delay(MyUtils.delay);
@@ -134,7 +134,9 @@ public class SearchAlgorithms extends Thread {
 						if (temp.equals(child)) {
 							continue;
 						}
-						temp.setType(Type.FRONTIER);
+						if (!temp.getType().equals(Type.VISITED)) {
+							temp.setType(Type.FRONTIER);
+						}
 					}
 				}
 
@@ -153,7 +155,7 @@ public class SearchAlgorithms extends Thread {
 		while (MyUtils.solving && !frontier.isEmpty() && !solutionFound) {
 			currentNode = frontier.poll();
 			currentNode.setType(Type.CURRENT);
-	
+
 			panel.revalidate();
 			panel.repaint();
 			delay(MyUtils.delay);
