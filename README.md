@@ -21,6 +21,7 @@ This is a tool to visualize search algorithms
 * Generate random maze
 * Reset the whole grid
 * Reset only the path
+* Pause/Resume the proccess
 
 # How to use
 * Starting node: Drag and move around with left click
@@ -30,6 +31,7 @@ This is a tool to visualize search algorithms
 * Generate maze: Press the generate button
 * Reset grid: You can reset the grid anytime
 * Reset path: You can only reset the path when the algorithm is done
+* Pause/Resume: press space to pause or resume the proccess
 * Visualize: Press the visualize button
 
 ## Preview
