@@ -1,6 +1,7 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -62,6 +63,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 	public void resetGrid() {
 		MyUtils.solving = false;
 		MyUtils.breakAlgo = true;
+		MyUtils.stopped = false;
 		grid.initialiseGrid();
 		this.revalidate();
 		this.repaint();
@@ -88,6 +90,14 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 		g.setStroke(new BasicStroke(1.5f));
 		g.setColor(Color.black);
 		grid.drawGrid(g, this);
+		
+		if(MyUtils.stopped) {
+			g.setFont(new Font("Poppins", Font.CENTER_BASELINE, 60));
+			g.setColor(new Color(255, 0, 142));
+			g.drawString("Paused", width / 2 - 110 , height / 4);
+			g.setFont(new Font("Poppins", Font.CENTER_BASELINE, 30));
+			g.drawString("Press space to resume", width / 2 - 160 , height / 3);
+		}
 	}
 
 	@Override
@@ -96,6 +106,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 	}
 
 	public void resetPath() {
+		MyUtils.stopped = false;
 		grid.resetPath();
 		this.revalidate();
 		this.repaint();

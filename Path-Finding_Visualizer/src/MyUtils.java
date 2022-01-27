@@ -8,4 +8,5 @@ public class MyUtils {
 	public static boolean solving = false;
 	public static boolean breakAlgo = false;
 	public static boolean allowDiagonials = false;
+	public static boolean stopped = false;
 }
