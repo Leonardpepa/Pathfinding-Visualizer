@@ -80,12 +80,16 @@ public class ControlsPanel extends JPanel implements ActionListener {
 					if (MyUtils.stopped) {
 						MyUtils.stopped = false;
 						algo.resume();
+						gridPanel.revalidate();
+						gridPanel.repaint();
 						return;
 					}
 
 					MyUtils.stopped = true;
 					algo.suspend();
-
+					
+					gridPanel.revalidate();
+					gridPanel.repaint();
 				}
 			}
 		});
